@@ -1,7 +1,6 @@
 import entidades.calculadora;
 import entidades.painelDesenho;
 import entidades.projetil;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -225,7 +224,7 @@ public class telaPrincipal extends JFrame {
 
                // Atualiza a posição do projétil usando as fórmulas de movimento
                double novaPosicaoX = x0 + (calc.getVelocidadeInicialX() * tempoPassado);
-               double novaPosicaoY = y0 + (calc.getVelocidadeInicialY() * tempoPassado) - (0.5 * 9.81 * Math.pow(tempoPassado, 2));
+               double novaPosicaoY = y0 + (calc.getVelocidadeInicialY() * tempoPassado) - (0.5 * 32.2 * Math.pow(tempoPassado, 2));
 
                if(novaPosicaoY < 0)
                   novaPosicaoY = 0; // Garante que o projétil não vá abaixo do chão

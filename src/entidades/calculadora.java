@@ -4,11 +4,11 @@ public class calculadora {
 
 	// === CONSTANTES ===
 	//	FÍSICA
-	private static final double GRAVIDADE = 9.80665; // m/s² 
+	private static final double GRAVIDADE = 32.2; // m/s² 
 	// LIMITES DE RECORDES REAIS
-	private static final double VELOCIDADE_MAX = 6583.33; // m/s (velocidade máxima de um canhão)
-	private static final double ALTURA_MAX = 25.0; // 25 metros  
-	private static final double DISTANCIA_MAX = 50.0; // 50 metros
+	private static final double VELOCIDADE_MAX = 21600.0; // m/s (velocidade máxima de um canhão)
+	private static final double ALTURA_MAX = 82.0; // 82 pés ~= 25 metros   
+	private static final double DISTANCIA_MAX = 164; // 164 pés ~= 50 metros
 	// LIMITES TECNICOS (para evitar erros de cálculo)
 	private static final double ANGULO_MAX = 89.9; // em graus
 	private static final double ANGULO_MIN = 0.1; // em graus
@@ -181,7 +181,7 @@ public class calculadora {
 	}
 	// hmax
 	public void calcularAlturaMaxima() {
-		double hMax = posicaoInicialY +(Math.pow(this.velocidadeInicialY, 2)) / (2 * GRAVIDADE);
+		double hMax = posicaoInicialY + (Math.pow(this.velocidadeInicialY, 2)) / (2 * GRAVIDADE);
 		if(hMax > ALTURA_MAX) 
 			throw new IllegalArgumentException("A altura máxima calculada supera o limite permitido.");
 
