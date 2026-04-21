@@ -14,10 +14,12 @@ public class telaPrincipal extends JFrame {
    private JTextField txtX0, txtY0, txtXFinal, txtYFinal, txtAngulo;
    // Componentes de Output
    private JTextField txtV0, txtV0x, txtV0y, txtHMax, txtTempo;
-   // Botão de Ação
-   private JButton btnResetar; 
    // Painel de Animação (Customizado)
    private JPanel painelAnimacao;
+   private JPanel painelSuperior;
+   // Botão de Ação
+   private JButton btnResetar; 
+   private JButton btnMostrar;
    //Classes
    private painelDesenho painelDesenho;
    private projetil bola;
@@ -26,6 +28,7 @@ public class telaPrincipal extends JFrame {
    private double tempoPassado;
 
    public telaPrincipal() throws NumberFormatException {
+      setResizable(false);
       setTitle("Simulador de Lançamento Oblíquo");
       setSize(1000, 700);
       setMinimumSize(new Dimension(1000, 700));
@@ -33,13 +36,30 @@ public class telaPrincipal extends JFrame {
       setLocationRelativeTo(null);
       setLayout(new BorderLayout(10, 10));
       
-      // 1. Painel Superior (Inputs e Outputs)
-      JPanel painelSuperior = new JPanel(new GridLayout(1, 2, 10, 10));
+      JPanel painelNorte = new JPanel(new BorderLayout());
+
+      // Painel Superior (Inputs e Outputs)
+      painelSuperior = new JPanel(new GridLayout(1, 2, 10, 10));
       painelSuperior.add(criarPainelInputs());
       painelSuperior.add(criarPainelOutputs());      
       add(painelSuperior, BorderLayout.NORTH);
       
-      // 2. Painel Central (Animação)
+      btnMostrar = new JButton("Mostrar inputs");
+      btnMostrar.setVisible(false);
+      btnMostrar.setFocusPainted(false);
+      btnMostrar.setBackground(new Color(240, 240, 240));
+      btnMostrar.addActionListener(e -> {
+         painelSuperior.setVisible(true);
+         btnMostrar.setVisible(false);
+         revalidate();
+         repaint();
+      });
+
+      painelNorte.add(painelSuperior, BorderLayout.CENTER);
+      painelNorte.add(btnMostrar, BorderLayout.SOUTH);
+      add(painelNorte, BorderLayout.NORTH);
+
+      // Painel Central (Animação)
       painelAnimacao = new JPanel();
       painelAnimacao.setBackground(new Color(135, 206, 250));
       painelAnimacao.setBorder(new TitledBorder("ANIMAÇÃO"));      
@@ -48,7 +68,7 @@ public class telaPrincipal extends JFrame {
       painelDesenho = new painelDesenho();
       add(painelDesenho, BorderLayout.CENTER);
       
-      // 3. Botão de Ação (Sul)
+      // Botão de Ação (Sul)
       JButton btnLancar = new JButton("Calcular e Lançar");
       btnLancar.setFont(new Font("Arial", Font.BOLD, 14));
       btnLancar.addActionListener(e -> iniciarAnimacao());
@@ -158,15 +178,30 @@ public class telaPrincipal extends JFrame {
          if (timer != null && timer.isRunning())
             timer.stop();
 
+         painelSuperior.setVisible(false);
+         btnMostrar.setVisible(true);
+
+         revalidate();
+         repaint();
+
          //Lê os inputs
          double x0 = Double.parseDouble(txtX0.getText().replace(',', '.'));
          double y0 = Double.parseDouble(txtY0.getText().replace(',', '.'));
          double xFinal = Double.parseDouble(txtXFinal.getText().replace(',', '.'));
          double yFinal = Double.parseDouble(txtYFinal.getText().replace(',', '.'));
          double angulo = Double.parseDouble(txtAngulo.getText().replace(',', '.'));
+        
+         double limiteX = painelDesenho.getWidth() / 20.0; // Limite para o projétil não sair da tela
+         double limiteY = (painelDesenho.getHeight() - 50) / 20.0; // Limite para o projétil não sair da tela
          
          calculadora calc = new calculadora(x0, y0, xFinal, yFinal, angulo);
+         
+         if(xFinal > limiteX)
+            throw new IllegalArgumentException("A posição final ultrapassa os limites da tela. Por favor, insira valores menores para X e Y finais.");
          calc.calcularTudo();
+
+         if(calc.getAlturaMaxima() > limiteY)
+            throw new IllegalArgumentException("A altura máxima ultrapassa os limites da tela. Por favor, insira valores menores para X e Y finais.");
 
          //Preenche os outputs
          txtV0.setText(String.format("%.2f", calc.getVelocidadeInicial()));

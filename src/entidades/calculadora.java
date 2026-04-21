@@ -7,8 +7,8 @@ public class calculadora {
 	private static final double GRAVIDADE = 9.80665; // m/s² 
 	// LIMITES DE RECORDES REAIS
 	private static final double VELOCIDADE_MAX = 6583.33; // m/s (velocidade máxima de um canhão)
-	private static final double ALTURA_MAX = 100000.0;     // 50 km
-	private static final double DISTANCIA_MAX = 180000.0; // 100 km
+	private static final double ALTURA_MAX = 25.0; // 25 metros  
+	private static final double DISTANCIA_MAX = 50.0; // 50 metros
 	// LIMITES TECNICOS (para evitar erros de cálculo)
 	private static final double ANGULO_MAX = 89.9; // em graus
 	private static final double ANGULO_MIN = 0.1; // em graus
@@ -35,8 +35,8 @@ public class calculadora {
 		setPosicaoInicialY(posicaoInicialY);
 		setPosicaoFinalX(posicaoFinalX);
 		setPosicaoFinalY(posicaoFinalY);
-		setDetalX();
-		setDetalY();
+		setDeltaX();
+		setDeltaY();
 		setAnguloLancamento(anguloLancamento);
 	}
 	public void calcularTudo() {	
@@ -52,6 +52,8 @@ public class calculadora {
 	public void setPosicaoInicialX(double posicaoInicial) {
 		if(posicaoInicial < 0.0)
 			throw new IllegalArgumentException("Posição inicial não pode ser negativa.");
+		if(posicaoInicial > DISTANCIA_MAX)
+			throw new IllegalArgumentException("A posição inicial deve ser menor que " + DISTANCIA_MAX + " metros para um lançamento válido.");
 
 		this.posicaoInicialX = posicaoInicial;
 	}
@@ -62,6 +64,8 @@ public class calculadora {
 	public void setPosicaoInicialY(double posicaoInicial) {
 		if(posicaoInicial < 0.0)
 			throw new IllegalArgumentException("Posição inicial não pode ser negativa.");
+		if(posicaoInicial > ALTURA_MAX)
+			throw new IllegalArgumentException("A posição inicial deve ser menor que " + ALTURA_MAX + " metros para um lançamento válido.");
 
 		this.posicaoInicialY = posicaoInicial;
 	}
@@ -73,6 +77,9 @@ public class calculadora {
 		if(posicaoFinal < 0.0)
 			throw new IllegalArgumentException("Posição final não pode ser negativa.");
 
+		if(posicaoFinal > DISTANCIA_MAX)
+			throw new IllegalArgumentException("A posição final deve ser menor que " + DISTANCIA_MAX + " metros para um lançamento válido.");
+
 		this.posicaoFinalX = posicaoFinal;
 	}
 	public double getPosicaoFinalX() {
@@ -80,33 +87,38 @@ public class calculadora {
 	}
 	// Y
 	public void setPosicaoFinalY(double posicaoFinal) {
+		if(posicaoFinal < 0.0)
+			throw new IllegalArgumentException("Posição final não pode ser negativa.");
+		if(posicaoFinal > ALTURA_MAX)
+			throw new IllegalArgumentException("A posição final deve ser menor que " + ALTURA_MAX + " metros para um lançamento válido.");
+		
 		this.posicaoFinalY = posicaoFinal;
 	}
 	public double getPosicaoFinalY() {
 		return posicaoFinalY;
 	}
 	// Δx
-	public void setDetalX() {
+	public void setDeltaX() {
 		double Δx = this.posicaoFinalX - this.posicaoInicialX;
 		if(Δx <= 0.0)
 			throw new IllegalArgumentException("A posição final deve ser maior que a posição inicial para um lançamento válido.");
 		if(Δx > DISTANCIA_MAX)
-			throw new IllegalArgumentException("A distância percorrida supera a Termosfera.");
+			throw new IllegalArgumentException("A distância percorrida supera os limites da tela");
 
 		this.deltaX = Δx;
 	}
-	public double getDetalX() {
+	public double getDeltaX() {
 		return deltaX;
 	}
 	// Δy
-	public void setDetalY() {
+	public void setDeltaY() {
 		double Δy = this.posicaoFinalY - this.posicaoInicialY;
 		if(Δy > ALTURA_MAX)
 			throw new IllegalArgumentException("A altura alcançada supera o limite máximo permitido.");
 
 		this.deltaY = Δy;
 	}
-	public double getDetalY() {
+	public double getDeltaY() {
 		return deltaY;
 	}
 	// θ
