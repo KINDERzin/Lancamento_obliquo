@@ -2,140 +2,188 @@ package entidades;
 
 public class calculadora {
 
-	private float ACELERACAO_MAXIMA = 10.0f;  // m/s²
-	private float VELOCIDADE_MAXIMA = 30.56f; // m/s (110 km/h)
-	private float GRAVIDADE = 9.81f;          // m/s²  
+	// === CONSTANTES ===
+	//	FÍSICA
+	private static final double GRAVIDADE = 9.80665; // m/s² 
+	// LIMITES DE RECORDES REAIS
+	private static final double VELOCIDADE_MAX = 6583.33; // m/s (velocidade máxima de um canhão)
+	private static final double ALTURA_MAX = 100000.0;     // 50 km
+	private static final double DISTANCIA_MAX = 180000.0; // 100 km
+	// LIMITES TECNICOS (para evitar erros de cálculo)
+	private static final double ANGULO_MAX = 89.9; // em graus
+	private static final double ANGULO_MIN = 0.1; // em graus
 
 	// INPUTS
-	float posicaoInicial;    // x0 ou y0
-	float tempo;             // t
-	float aceleracao;        // a
-	float velocidadeInicial; // v0
+	double posicaoInicialX;  // x0
+	double posicaoInicialY;  // y0
+	double posicaoFinalX;    // X
+	double posicaoFinalY;    // Y
+	double deltaX;			  // Δx
+	double deltaY;			  // Δy
+	double anguloLancamento; // θ
 
 	// OUTPUTS
-	float velocidadeFinal; // v
-	float deltaX;          // Δx = xFinal - xInicial
-	float deltaY;          // Δy = yFinal - yInicial
+	double velocidadeInicial;  // Σv0
+	double velocidadeInicialX; // v0x
+	double velocidadeInicialY; // v0y
+	double alturaMaxima;       // Hmax
+	double tempoTotal;		   // Σt
 
     // CONSTRUTOR DA CLASSE
-	public calculadora(float posicaoInicial, float tempo, float aceleracao, float velocidadeInicial) {
-		this.posicaoInicial = posicaoInicial;
-		this.tempo = tempo;
-		this.aceleracao = aceleracao;
-		this.velocidadeInicial = velocidadeInicial;
+	public calculadora(double posicaoInicialX, double posicaoInicialY, double posicaoFinalX, double posicaoFinalY, double anguloLancamento) {
+		setPosicaoInicialX(posicaoInicialX);
+		setPosicaoInicialY(posicaoInicialY);
+		setPosicaoFinalX(posicaoFinalX);
+		setPosicaoFinalY(posicaoFinalY);
+		setDetalX();
+		setDetalY();
+		setAnguloLancamento(anguloLancamento);
+	}
+	public void calcularTudo() {	
+		calcularVelocidadeInicial();  // v0
+		calcularVelocidadeInicialX(); // v0x
+		calcularVelocidadeInicialY(); // v0y
+		calcularAlturaMaxima();       // Hmax
+		calcularTempoTotal();         // Σt
 
-		// FORMULAS
-		// v = v0 + a * t
-		// v² = v0² + 2 * a * (x - x0) * t
-		// x = x0 + v0 * t + a * t² / 2
 	}
+	// === GETTERS E SETTERS ===
+	// v0X
+	public void setPosicaoInicialX(double posicaoInicial) {
+		if(posicaoInicial < 0.0)
+			throw new IllegalArgumentException("Posição inicial não pode ser negativa.");
 
-    // POSIÇÃO INICIAL (x0 ou y0) EM METROS
-	public void setPosicaoInicial(float posicaoInicial) {
-		this.posicaoInicial = posicaoInicial;
+		this.posicaoInicialX = posicaoInicial;
 	}
-	public float getPosicaoInicial() {
-		return posicaoInicial;
+	public double getPosicaoInicialX() {
+		return posicaoInicialX;
 	}
-    
-	// TEMPO (t) EM SEGUNDOS
-	public void setTempo(float tempo) {
-		if (tempo < 0) {
-			System.out.println("Tempo não pode ser negativo.");
-			throw new IllegalArgumentException("Tempo não pode ser negativo. (setTempo)");
-		}
-		this.tempo = tempo;
-	}
-	public float getTempo() {
-		return tempo;
-	}
+	// v0Y
+	public void setPosicaoInicialY(double posicaoInicial) {
+		if(posicaoInicial < 0.0)
+			throw new IllegalArgumentException("Posição inicial não pode ser negativa.");
 
-	// ACELERAÇÃO (a) EM m/s²
-	public void setAceleracao(float aceleracao) {
-		if (aceleracao < 0) {
-			System.out.println("Aceleração não pode ser negativa.");
-			throw new IllegalArgumentException("Aceleração não pode ser negativa. (setAceleracao)");
-		}
-		if (aceleracao > ACELERACAO_MAXIMA) {
-			System.out.println("Aceleração não pode ser maior que " + ACELERACAO_MAXIMA + " m/s².");
-			throw new IllegalArgumentException("Aceleração não pode ser maior que " + ACELERACAO_MAXIMA + " m/s². (setAceleracao)");
-		}
-		this.aceleracao = aceleracao;
+		this.posicaoInicialY = posicaoInicial;
 	}
-	public float getAceleracao() {
-		return aceleracao;
+	public double getPosicaoInicialY() {
+		return posicaoInicialY;
 	}
-    
-	// VELOCIDADE INICIAL (v0) EM m/s
-	public void setVelocidadeInicial(float v0) {
-		if (v0 < 0) {
-			System.out.println("Velocidade inicial não pode ser negativa.");
-			throw new IllegalArgumentException("Velocidade inicial não pode ser negativa.");
-		}
-		if (v0 > VELOCIDADE_MAXIMA) {
-			System.out.println("Velocidade inicial não pode ser maior que " + VELOCIDADE_MAXIMA + " m/s (110 km/h).");
-			throw new IllegalArgumentException("Velocidade inicial não pode ser maior que " + VELOCIDADE_MAXIMA + " m/s (110 km/h).");
-		}
+	// X
+	public void setPosicaoFinalX(double posicaoFinal) {
+		if(posicaoFinal < 0.0)
+			throw new IllegalArgumentException("Posição final não pode ser negativa.");
 
-		this.velocidadeInicial = v0;
+		this.posicaoFinalX = posicaoFinal;
 	}
-	public float getVelocidadeInicial() {
-		return velocidadeInicial;
+	public double getPosicaoFinalX() {
+		return posicaoFinalX;
 	}
+	// Y
+	public void setPosicaoFinalY(double posicaoFinal) {
+		this.posicaoFinalY = posicaoFinal;
+	}
+	public double getPosicaoFinalY() {
+		return posicaoFinalY;
+	}
+	// Δx
+	public void setDetalX() {
+		double Δx = this.posicaoFinalX - this.posicaoInicialX;
+		if(Δx <= 0.0)
+			throw new IllegalArgumentException("A posição final deve ser maior que a posição inicial para um lançamento válido.");
+		if(Δx > DISTANCIA_MAX)
+			throw new IllegalArgumentException("A distância percorrida supera a Termosfera.");
 
-	public float calcularVelocidadeFinal() {
-		// Vfinal = Vinicial + (aceleração * tempo)
-		if (velocidadeInicial < 0 || velocidadeInicial > VELOCIDADE_MAXIMA) {
-			System.out.println("Velocidade inicial inválida. Deve ser entre 0 e " + VELOCIDADE_MAXIMA + " m/s.");
-			throw new IllegalArgumentException("Velocidade inicial inválida. Deve ser entre 0 e " + VELOCIDADE_MAXIMA + " m/s.");
-		} 
-		if (aceleracao < 0 || aceleracao > ACELERACAO_MAXIMA) {
-			System.out.println("Aceleração inválida. Deve ser entre 0 e " + ACELERACAO_MAXIMA + " m/s².");
-			throw new IllegalArgumentException("Aceleração inválida. Deve ser entre 0 e " + ACELERACAO_MAXIMA + " m/s².");
-		} 
-		if (tempo < 0) {
-			System.out.println("Tempo inválido. Deve ser maior ou igual a 0 segundos.");
-			throw new IllegalArgumentException("Tempo inválido. Deve ser maior ou igual a 0 segundos.");
-		} 
-			this.velocidadeFinal = velocidadeInicial + (aceleracao * tempo);
-			return velocidadeFinal;
+		this.deltaX = Δx;
 	}
-
-	public float calcularAceleracao() {
-		// a = (Vfinal - Vinicial) / tempo
-		if (velocidadeFinal < 0 || velocidadeFinal > VELOCIDADE_MAXIMA) {
-			System.out.println("Velocidade final inválida. Deve ser entre 0 e " + VELOCIDADE_MAXIMA + " m/s.");
-			throw new IllegalArgumentException("Velocidade final inválida. Deve ser entre 0 e " + VELOCIDADE_MAXIMA + " m/s.");
-		} 
-		if (velocidadeInicial < 0 || velocidadeInicial > VELOCIDADE_MAXIMA) {
-			System.out.println("Velocidade inicial inválida. Deve ser entre 0 e " + VELOCIDADE_MAXIMA + " m/s.");
-			throw new IllegalArgumentException("Velocidade inicial inválida. Deve ser entre 0 e " + VELOCIDADE_MAXIMA + " m/s.");
-		} 
-		if (tempo <= 0) {
-			System.out.println("Tempo inválido. Deve ser maior que 0 segundos.");
-			throw new IllegalArgumentException("Tempo inválido. Deve ser maior que 0 segundos.");
-		} 
-			this.aceleracao = (velocidadeFinal - velocidadeInicial) / tempo;
-			return aceleracao;
-	}
-	
-	public float calcularDeslocamentoX(float x, float x0) {
-		if(x < 0.0 || x0 < 0.0) {
-			System.out.println("Posição não pode ser negativa.");
-			throw new IllegalArgumentException("Posição não pode ser negativa. (calcularDeslocamentoX)");
-		}
-
-		this.deltaX = x - x0;
+	public double getDetalX() {
 		return deltaX;
 	}
+	// Δy
+	public void setDetalY() {
+		double Δy = this.posicaoFinalY - this.posicaoInicialY;
+		if(Δy > ALTURA_MAX)
+			throw new IllegalArgumentException("A altura alcançada supera o limite máximo permitido.");
 
-	public float calcularDeslocamentoY(float y, float y0) {
-		if(y < 0.0 || y0 < 0.0) {
-			System.out.println("Posição não pode ser negativa.");
-			throw new IllegalArgumentException("Posição não pode ser negativa. (calcularDeslocamentoY)");
-		}
-
-		this.deltaY = y - y0;
+		this.deltaY = Δy;
+	}
+	public double getDetalY() {
 		return deltaY;
-	} 
+	}
+	// θ
+	public void setAnguloLancamento(double angulo) {
+		if(angulo < ANGULO_MIN || angulo > ANGULO_MAX) 
+			throw new IllegalArgumentException("Ângulo de lançamento deve estar entre " + ANGULO_MIN + " e " + ANGULO_MAX + " graus.");
+
+		this.anguloLancamento = Math.toRadians(angulo);
+	}
+	public double getAnguloLancamento() {
+		return Math.toDegrees(anguloLancamento);
+	}
+	
+	// OUTPUTS
+	public double getVelocidadeInicial() {
+		return velocidadeInicial;
+	}
+	public double getVelocidadeInicialX() {
+		return velocidadeInicialX;
+	}
+	public double getVelocidadeInicialY() {
+		return velocidadeInicialY;
+	}
+	public double getAlturaMaxima() {
+		return alturaMaxima;
+	}
+	public double getTempoTotal() {
+		return tempoTotal;
+	}
+
+	// === CÁLCULOS ===
+	// v0
+	public void calcularVelocidadeInicial() {
+		double denominador = 2 * Math.pow(Math.cos(this.anguloLancamento), 2) * (this.deltaX * Math.tan(this.anguloLancamento) - this.deltaY);
+		// Denominador não pode ser zero ou negativo
+		if(denominador <= 0) 
+			throw new IllegalArgumentException("Cálculo impossível com os valores fornecidos. Verifique as posições e o ângulo.");
+		
+		double v0 = Math.sqrt((GRAVIDADE * Math.pow(this.deltaX, 2)) / denominador);
+		// Velocidade inicial deve ser inferior a 
+		if(v0 > VELOCIDADE_MAX) 
+			throw new IllegalArgumentException("Velocidade inicial supera o limite máximo permitido.");
+	
+		this.velocidadeInicial = v0;
+	}
+	// v0X
+	public void calcularVelocidadeInicialX() {
+		double v0X = this.velocidadeInicial * Math.cos(this.anguloLancamento);
+		// Validações
+		if(v0X <= 0) 
+			throw new IllegalArgumentException("Velocidade inicial em X deve ser positiva para calcular o tempo total.");
+		if(v0X > VELOCIDADE_MAX) 
+			throw new IllegalArgumentException("Velocidade inicial em X supera o limite máximo permitido.");
+		
+		this.velocidadeInicialX = v0X;
+	}
+	// v0Y
+	public void calcularVelocidadeInicialY() {
+		this.velocidadeInicialY = this.velocidadeInicial * Math.sin(this.anguloLancamento);
+	}
+	// hmax
+	public void calcularAlturaMaxima() {
+		double hMax = posicaoInicialY +(Math.pow(this.velocidadeInicialY, 2)) / (2 * GRAVIDADE);
+		if(hMax > ALTURA_MAX) 
+			throw new IllegalArgumentException("A altura máxima calculada supera o limite permitido.");
+
+		this.alturaMaxima = hMax;
+	}
+	// t
+	public void calcularTempoTotal() {
+		if(velocidadeInicialX <= 0) 
+			throw new IllegalArgumentException("Velocidade inicial em X deve ser positiva para calcular o tempo total.");
+
+		double tempoVoo = deltaX / velocidadeInicialX;
+		if(tempoVoo <= 0) 
+			throw new IllegalArgumentException("Cálculo do tempo total resultou em valor não positivo. Verifique os valores de entrada.");
+
+		this.tempoTotal = tempoVoo;
+	}
 }
