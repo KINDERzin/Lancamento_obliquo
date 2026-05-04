@@ -5,14 +5,6 @@
 
 ---
 
-## 📌 Contexto do Projeto
-
-Este projeto foi desenvolvido como ferramenta de validação para problemas clássicos de cinemática, com foco no **lançamento oblíquo** conforme formulado por Halliday. O caso de uso principal é o **arremesso de lance livre no basquete**: dado que a bola parte de uma posição inicial conhecida e deve acertar a cesta em uma posição final precisa, qual deve ser a velocidade de lançamento?
-
-O diferencial deste simulador está na **abordagem de cálculo reverso** — ao contrário de simulações convencionais que partem da velocidade para encontrar onde o projétil cai, aqui o usuário define **onde o projétil deve chegar** e o sistema calcula a velocidade necessária.
-
----
-
 ## ⚙️ Configurações do Motor Físico
 
 | Parâmetro | Valor | Unidade |
@@ -22,8 +14,6 @@ O diferencial deste simulador está na **abordagem de cálculo reverso** — ao 
 | Distância máxima (X) | 190.0 | ft |
 | Altura máxima (Y) | 90.0 | ft |
 | Ângulo de lançamento | 0.1° – 89.9° | graus |
-
-> ⚠️ **Importante:** a gravidade adotada é **32.2 ft/s²** (padrão imperial), conforme o sistema de unidades do projeto. Não confundir com 9.81 m/s² (padrão SI).
 
 ### Fórmulas Utilizadas
 
