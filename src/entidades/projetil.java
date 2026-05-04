@@ -13,7 +13,7 @@ public class projetil {
       setVelocidadeY(velocidadeY);
    }
 
-   // POSIÇÃO X (x) EM METROS
+   // POSIÇÃO X (x) EM PÉS
    public double getPosicaoX() {
       return posicaoX;
    }
@@ -23,7 +23,7 @@ public class projetil {
       
       this.posicaoX = posicaoX;
    }
-   // POSIÇÃO Y (y) EM METROS
+   // POSIÇÃO Y (y) EM PÉS
    public double getPosicaoY() {
       return posicaoY;
    }
@@ -33,7 +33,7 @@ public class projetil {
       
       this.posicaoY = posicaoY;
    }
-   // VELOCIDADE X (vx) EM m/s
+   // VELOCIDADE X (vx) EM ft/s
    public double getVelocidadeX() {
       return velocidadeX;
    }
@@ -43,14 +43,11 @@ public class projetil {
       
       this.velocidadeX = velocidadeX;
    }
-   // VELOCIDADE Y (vy) EM m/s
+   // VELOCIDADE Y (vy) EM ft/s
    public double getVelocidadeY() {
       return velocidadeY;
    }
-   public void setVelocidadeY(double velocidadeY) {
-      if (velocidadeY < 0.0) 
-         throw new IllegalArgumentException("Velocidade Y não pode ser negativa.");
-      
+   public void setVelocidadeY(double velocidadeY) {      
       this.velocidadeY = velocidadeY;
    }
 }

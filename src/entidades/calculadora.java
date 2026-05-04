@@ -4,24 +4,22 @@ public class calculadora {
 
 	// === CONSTANTES ===
 	//	FÍSICA
-	private static final double GRAVIDADE = 32.2; // m/s² 
-	// LIMITES DE RECORDES REAIS
-	private static final double VELOCIDADE_MAX = 21600.0; // m/s (velocidade máxima de um canhão)
-	private static final double ALTURA_MAX = 82.0; // 82 pés ~= 25 metros   
-	private static final double DISTANCIA_MAX = 164; // 164 pés ~= 50 metros
+	private static final double GRAVIDADE = 32.2; // ft/s² 
+	// LIMITES DE ENTRADA
+	private static final double VELOCIDADE_MAX = 50000.0; // m/s (velocidade máxima de um canhão)
+	private static final double ALTURA_MAX = 90.0; // 82 pés ~= 25 metros   
+	private static final double DISTANCIA_MAX = 190.0; // 164 pés ~= 50 metros
 	// LIMITES TECNICOS (para evitar erros de cálculo)
 	private static final double ANGULO_MAX = 89.9; // em graus
 	private static final double ANGULO_MIN = 0.1; // em graus
-
 	// INPUTS
 	double posicaoInicialX;  // x0
 	double posicaoInicialY;  // y0
 	double posicaoFinalX;    // X
 	double posicaoFinalY;    // Y
-	double deltaX;			  // Δx
-	double deltaY;			  // Δy
+	double deltaX;			    // Δx
+	double deltaY;			    // Δy
 	double anguloLancamento; // θ
-
 	// OUTPUTS
 	double velocidadeInicial;  // Σv0
 	double velocidadeInicialX; // v0x
@@ -29,7 +27,7 @@ public class calculadora {
 	double alturaMaxima;       // Hmax
 	double tempoTotal;		   // Σt
 
-    // CONSTRUTOR DA CLASSE
+   // Construtor
 	public calculadora(double posicaoInicialX, double posicaoInicialY, double posicaoFinalX, double posicaoFinalY, double anguloLancamento) {
 		setPosicaoInicialX(posicaoInicialX);
 		setPosicaoInicialY(posicaoInicialY);
@@ -39,6 +37,8 @@ public class calculadora {
 		setDeltaY();
 		setAnguloLancamento(anguloLancamento);
 	}
+
+	// Realiza todos os cálculos necessários para preencher os outputs
 	public void calcularTudo() {	
 		calcularVelocidadeInicial();  // v0
 		calcularVelocidadeInicialX(); // v0x
@@ -47,6 +47,7 @@ public class calculadora {
 		calcularTempoTotal();         // Σt
 
 	}
+	
 	// === GETTERS E SETTERS ===
 	// v0X
 	public void setPosicaoInicialX(double posicaoInicial) {

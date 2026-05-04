@@ -55,24 +55,22 @@ public class animacaoArremesso {
       //Configura 60 FPS
       timer = new Timer(16, e -> atualizarPosicao());
    }
-
+   // Atualiza a posição do projétil
    private void atualizarPosicao() {
       tempoAtual += 0.016; // Incrementa o tempo a cada atualização (16 ms)
 
       if(tempoAtual <= tempoTotal) {
          double novoX = xOrigem + velocidadeInicialX * tempoAtual;
          // Y = y0 + v0y * t - (g * t²) / 2
-         double novoY = yOrigem + velocidadeInicialY * tempoAtual - 0.5 * 9.81 * tempoAtual * tempoAtual;
+         double novoY = yOrigem + velocidadeInicialY * tempoAtual - 0.5 * 32.2 * tempoAtual * tempoAtual;
          
          proj.setPosicaoX(novoX);
          proj.setPosicaoY(novoY);
 
-         // Chamar repaint mais pra frente
       }
       else
          timer.stop(); // Para a animação quando o tempo total for atingido
    }
-
    // Será chamar ao iniciar a animação pelo botao na interface
    public void iniciarAnimacao(double v0, double angulo) {
       if(v0 < 0.0)
