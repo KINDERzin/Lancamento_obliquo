@@ -5,6 +5,22 @@
 
 ---
 
+## 🖼️ Preview
+
+![Simulador de Lançamento Oblíquo](src\images\layout_app.png)
+
+*Exemplo de lançamento com x₀=0, y₀=7, X=15, Y=10, θ=55° — v₀ calculada em 24,45 ft/s.*
+
+---
+
+## 📌 Contexto do Projeto
+
+Este projeto foi desenvolvido como ferramenta de validação para problemas clássicos de cinemática, com foco no **lançamento oblíquo** conforme formulado por Halliday. O caso de uso principal é o **arremesso de lance livre no basquete**: dado que a bola parte de uma posição inicial conhecida e deve acertar a cesta em uma posição final precisa, qual deve ser a velocidade de lançamento?
+
+O diferencial deste simulador está na **abordagem de cálculo reverso** — ao contrário de simulações convencionais que partem da velocidade para encontrar onde o projétil cai, aqui o usuário define **onde o projétil deve chegar** e o sistema calcula a velocidade necessária.
+
+---
+
 ## ⚙️ Configurações do Motor Físico
 
 | Parâmetro | Valor | Unidade |
@@ -14,6 +30,8 @@
 | Distância máxima (X) | 190.0 | ft |
 | Altura máxima (Y) | 90.0 | ft |
 | Ângulo de lançamento | 0.1° – 89.9° | graus |
+
+> ⚠️ **Importante:** a gravidade adotada é **32.2 ft/s²** (padrão imperial), conforme o sistema de unidades do projeto. Não confundir com 9.81 m/s² (padrão SI).
 
 ### Fórmulas Utilizadas
 
@@ -63,6 +81,16 @@ Os valores abaixo reproduzem um cenário realista de arremesso de lance livre e 
 | Ângulo de lançamento ($\theta$) | `55°` |
 
 **Resultado esperado:** a bola deve seguir uma trajetória parabólica e acertar o alvo com precisão nas coordenadas (15, 10). Os valores de $v_0$, $v_{0x}$, $v_{0y}$, $H_{max}$ e $t_{total}$ serão exibidos no painel de resultados.
+
+| Saída | Valor |
+|---|---|
+| $v_0$ | 24,45 ft/s |
+| $v_{0x}$ | 14,02 ft/s |
+| $v_{0y}$ | 20,03 ft/s |
+| $H_{max}$ | 13,23 ft |
+| $t_{total}$ | 1,07 s |
+
+> Resultado validado na simulação — veja o [Preview](#️-preview) no topo do documento.
 
 ---
 
@@ -119,5 +147,13 @@ Os valores abaixo reproduzem um cenário realista de arremesso de lance livre e 
 
 - **Java** 8 ou superior
 - Nenhuma dependência externa — apenas a biblioteca padrão Java SE (`javax.swing`, `java.awt`)
+
+---
+
+## 📚 Referência Bibliográfica
+
+> HALLIDAY, David; RESNICK, Robert; WALKER, Jearl. **Fundamentos de Física — Volume 1: Mecânica**. 10. ed. Rio de Janeiro: LTC, 2016.
+
+---
 
 *Projeto acadêmico — Simulação de Física Computacional com Java Swing.*
