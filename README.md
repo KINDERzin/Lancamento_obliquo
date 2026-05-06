@@ -6,9 +6,9 @@
 ---
 
 ## 🖼️ Preview
-
-![Simulador de Lançamento Oblíquo](src\images\layout_app.png)
-
+ 
+![Simulador de Lançamento Oblíquo](https://github.com/user-attachments/assets/21279eb8-05fb-4577-90c4-ec2f86d7b3b7)
+ 
 *Exemplo de lançamento com x₀=0, y₀=7, X=15, Y=10, θ=55° — v₀ calculada em 24,45 ft/s.*
 
 ---
