@@ -131,6 +131,13 @@ public class painelDesenho extends JPanel{
       }
    }
 
+   public void adicionarPontoRastro(double pesX, double pesY) {
+      if (rastro != null) {
+         rastro.add(new java.awt.geom.Point2D.Double(pesX, pesY));
+         repaint();
+      }
+   }
+
    // Converte as coordenadas em pés para pixels, considerando a escala definida 
    private int pesEmPixelsX(double pesX) {
       return (int)(pesX * escala);
